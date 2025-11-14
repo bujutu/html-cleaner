@@ -80,8 +80,13 @@
         html = html.replace(/data-start="[^"]*"/g, "")
                 .replace(/data-end="[^"]*"/g, "");
 
-        // タグ内の余計な空白だけ整理
-        html = html.replace(/\s+>/g, ">").trim();
+        // タグ内の連続スペースを 1つにする。ただし改行は残す
+        html = html.replace(/<([^>\s]+)([^>]*)>/g, (match, tagName, attrs) => {
+            // attrs の前後の空白をトリムして連続空白を1つに
+            let cleanAttrs = attrs.replace(/\s+/g, ' ').trim();
+            // attrs が空ならタグは <tag/> 形式に
+            return cleanAttrs ? `<${tagName} ${cleanAttrs}>` : `<${tagName}>`;
+        });
 
         document.getElementById("output").value = html.trim();
     }
