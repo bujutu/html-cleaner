@@ -58,7 +58,6 @@
     </style>
 </head>
 <body>
-
     <h1>data-start / data-end 削除ツール</h1>
     <p>下の枠に HTML を貼り付け、「変換する」を押すと、<br>
     <code>data-start="xxx"</code> と <code>data-end="xxx"</code> を削除した HTML を生成します。<br>
@@ -84,15 +83,19 @@
         html = html.replace(/<([^>\s]+)([^>]*)>/g, (match, tagName, attrs) => {
             // attrs の前後の空白をトリムして連続空白を1つに
             let cleanAttrs = attrs.replace(/\s+/g, ' ').trim();
-            // attrs が空ならタグは <tag/> 形式に
-            return cleanAttrs ? `<${tagName} ${cleanAttrs}>` : `<${tagName}>`;
+        
+            // attrs が空ならタグは <tag> 形式に
+            let result = cleanAttrs ? `<${tagName} ${cleanAttrs}>` : `<${tagName}>`;
+        
+            // 自己閉じタグの前の空白を削除（<hr /> → <hr/>）
+            result = result.replace(/\s+\/>/g, '/>');
+        
+            return result;
         });
 
         document.getElementById("output").value = html.trim();
     }
     </script>
-
     <div class="footer">© 2025 html-cleaner</div>
-
 </body>
 </html>
