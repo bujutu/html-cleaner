@@ -61,7 +61,8 @@
 
     <h1>data-start / data-end 削除ツール</h1>
     <p>下の枠に HTML を貼り付け、「変換する」を押すと、<br>
-    <code>data-start="xxx"</code> と <code>data-end="xxx"</code> を削除した HTML を生成します。</p>
+    <code>data-start="xxx"</code> と <code>data-end="xxx"</code> を削除した HTML を生成します。<br>
+    改行はそのまま保持されます。</p>
 
     <h2>① HTML 入力</h2>
     <textarea id="input" placeholder="ここに HTML を貼り付けてください"></textarea>
@@ -79,15 +80,14 @@
         html = html.replace(/data-start="[^"]*"/g, "")
                 .replace(/data-end="[^"]*"/g, "");
 
-        // 空白が2つ以上 → 1つに整形
-        html = html.replace(/\s+/g, " ")
-                .replace(/ \>/g, ">");
+        // タグ内の余計な空白だけ整理
+        html = html.replace(/\s+>/g, ">").trim();
 
         document.getElementById("output").value = html.trim();
     }
     </script>
 
-    <div class="footer">© 2025 data-start / data-end remover</div>
+    <div class="footer">© 2025 html-cleaner</div>
 
 </body>
 </html>
